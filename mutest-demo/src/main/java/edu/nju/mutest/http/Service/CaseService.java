@@ -5,23 +5,33 @@ import edu.nju.mutest.http.Pojo.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CaseService {
 
     @Autowired
     private CaseDao caseDao;
 
-    public boolean addCase(Case c){
-        caseDao.addCase(c);
+    public List<Case> getCaseList(){
+        return caseDao.getCaseList();
+    }
+
+    public Case getCaseById(Long id){
+        return caseDao.getCaseById(id);
+    }
+
+    public boolean addCase(byte[] file){
+        caseDao.addCase(file);
         return true;
     }
 
-    public boolean updateCase(Long id, Case c){
-        return caseDao.updateCase(id,c);
+    public boolean updateCase(Long id, byte[] file){
+        return caseDao.updateCase(id,file);
     }
 
-    public boolean removeCase(Case c){
-        caseDao.removeCase(c);
+    public boolean removeCase(Long id){
+        caseDao.removeCase(id);
         return true;
     }
 }
