@@ -4,6 +4,7 @@ import edu.nju.mutest.http.Pojo.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class CaseDao{
 
     public Case getCaseById(Long id){
         for(Case c : caseList){
+            if(c.getId() == null)continue;
             if(c.getId().equals(id)){
                 return c;
             }
@@ -29,7 +31,7 @@ public class CaseDao{
 
     public boolean addCase(byte[] file){
         Random random = new Random();
-        caseList.add(new Case(random.nextLong(),file));
+        caseList.add(new Case(Math.abs(random.nextLong()),file));
         return true;
     }
 

@@ -10,7 +10,9 @@ import edu.nju.mutest.http.Service.ParamService;
 import edu.nju.mutest.http.Service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -41,14 +43,14 @@ public class CaseController {
     }
 
     @PostMapping("/case")
-    public String addCase(@RequestBody byte[] file){
-        caseService.addCase(file);
+    public String addCase(@RequestParam("file") MultipartFile file) throws IOException {
+        caseService.addCase(file.getBytes());
         return "ok";
     }
 
     @PutMapping("/case/{id}")
-    public String updateCase(@PathVariable("id") Long id,@RequestBody byte[] file){
-        caseService.updateCase(id,file);
+    public String updateCase(@PathVariable("id") Long id,@RequestParam("file") MultipartFile file) throws IOException {
+        caseService.updateCase(id,file.getBytes());
         return "ok";
     }
 
