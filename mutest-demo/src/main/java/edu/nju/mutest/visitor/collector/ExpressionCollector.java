@@ -4,8 +4,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import edu.nju.mutest.visitor.collector.cond.NumericCond;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExpressionCollector extends VoidVisitorAdapter<List<Expression>> {
     @Override
@@ -78,6 +80,6 @@ public class ExpressionCollector extends VoidVisitorAdapter<List<Expression>> {
         ExpressionCollector collector = new ExpressionCollector();
         List<Expression> ExprList = new NodeList<>();
         collector.visit(cu, ExprList);
-        return ExprList;
+        return ExprList.stream().filter(new NumericCond()::willCollect).collect(Collectors.toList());
     }
 }
