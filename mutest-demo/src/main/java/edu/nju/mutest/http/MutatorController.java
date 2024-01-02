@@ -16,18 +16,28 @@ public class MutatorController {
     static String mutator;
 
     @PostMapping("/mutator")
-    public ResponseEntity<String> MutatorUpload(@RequestBody String mutator) {
+    public ResponseEntity<String> MutatorUpload(@RequestBody String mut) {
 
+        if (mut != null) {
 
-        return new ResponseEntity<>("Mutator uploaded successfully", HttpStatus.OK);
+            mutator = mut;
 
+            return new ResponseEntity<>("Mutator uploaded successfully", HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>("Mutator is empty", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<String> updateResource(@PathVariable("id") String resourceId, @RequestBody String mutator) {
+    public  ResponseEntity<String> updateResource(@PathVariable("id") String resourceId, @RequestBody String mut) {
+
+        if (mut != null) {
+            mutator = mut;
 
             return new ResponseEntity<>("Mutator uploaded successfully", HttpStatus.OK);
-    }
+
+        }
+        return new ResponseEntity<>("Mutator is empty", HttpStatus.BAD_REQUEST);    }
 
 
 
