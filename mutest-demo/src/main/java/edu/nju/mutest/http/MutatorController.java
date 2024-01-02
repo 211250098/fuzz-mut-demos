@@ -28,7 +28,7 @@ public class MutatorController {
         return new ResponseEntity<>("Mutator is empty", HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/mutator/{id}")
     public  ResponseEntity<String> updateResource(@PathVariable("id") String resourceId, @RequestBody String mut) {
 
         if (mut != null) {

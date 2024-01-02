@@ -36,7 +36,7 @@ public class FileUploadController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/upload/{id}")
     public  ResponseEntity<String> updateResource(@PathVariable("id") String resourceId, @RequestParam("file") MultipartFile multipartFile) {
         if (multipartFile.isEmpty()) {
             return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST);
