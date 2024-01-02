@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import edu.nju.mutest.http.FileUploadController;
 
 /**
  * A demo for executing test suite against mutants
@@ -24,6 +25,7 @@ public class DemoMutantExecution {
             System.exit(0);
         }
 
+        File tem = FileUploadController.getFile();
         File tsDir = new File(args[0]);
         File mutPoolDir = new File(args[1]);
         System.out.println("[LOG] Test suite dir: " + tsDir.getAbsolutePath());

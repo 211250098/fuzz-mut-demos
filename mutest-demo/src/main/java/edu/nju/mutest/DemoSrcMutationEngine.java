@@ -3,14 +3,15 @@ package edu.nju.mutest;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
-import edu.nju.mutest.mutator.Mutator;
+import edu.nju.mutest.http.FileUploadController;
+import edu.nju.mutest.mutator.*;
 import org.apache.commons.io.FileUtils;
-import edu.nju.mutest.mutator.BinaryMutator;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -18,22 +19,28 @@ import java.util.Optional;
  */
 public class DemoSrcMutationEngine {
 
+    private static final Map<String, Class> mutatorName2Class = Map.of(
+            "abs", ABS_Mutator.class,
+            "aor", AOR_Mutator.class,
+            "lcr", LCR_Mutator.class,
+            "ror", ROR_Mutator.class,
+            "uoi", UOI_Mutator.class
+    );
+
     public static void main(String[] args) throws IOException {
 
-        if (args.length != 2) {
-            System.out.println("DemoSrcMutationEngine: <source_java_file> <mutant_pool_dir>");
-            System.exit(0);
-        }
 
         // Read in original program(s).
-        File srcFile = new File(args[0]);
-        File outDir = new File(args[1]);
+
+//        File srcFile = FileUploadController.getFile();
+        File srcFile = new File("C:/Users/admin/Desktop/fuzz-mut-demos/mut-cases/Sorting/edu/nju/ise/sorting/Sorting.java");
+        File outDir = new File("C:/Users/admin/Desktop/fuzz-mut-demos/mutest-demo/pool");
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
 
         // Initialize mutator(s).
         CompilationUnit cu = StaticJavaParser.parse(srcFile);
-        Mutator mutator = new BinaryMutator(cu);
+        Mutator mutator = new UOI_Mutator(cu);
 
         // Locate mutation points.
         mutator.locateMutationPoints();
