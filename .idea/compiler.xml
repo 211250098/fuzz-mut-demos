@@ -13,7 +13,12 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="mutest-demo" target="11" />
+      <module name="mutest-demo" target="17" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="mutest-demo" options="-parameters" />
+    </option>
   </component>
 </project>
