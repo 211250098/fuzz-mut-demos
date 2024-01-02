@@ -40,7 +40,7 @@ public class DemoSrcMutationEngine {
 
         // Initialize mutator(s).
         CompilationUnit cu = StaticJavaParser.parse(srcFile);
-        Mutator mutator = new UOI_Mutator(cu);
+        Mutator mutator = new LCR_Mutator(cu);
 
         // Locate mutation points.
         mutator.locateMutationPoints();

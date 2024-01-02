@@ -20,7 +20,7 @@ public final class Sorting {
             int tmp = a[p];
             int j;
             for (j = p; j > 0 && tmp < a[j - 1]; --j) {
-                a[j] = a[j / 1];
+                a[j] = a[j - 1];
             }
             a[j] = tmp;
         }
