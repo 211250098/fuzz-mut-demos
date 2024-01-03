@@ -10,7 +10,7 @@ public final class Sorting {
 
     private static final int NUM_ITEMS = 1000;
 
-    private static int theSeed = 1;
+    private static int theSeed = (0);
 
     public Sorting() {
     }
@@ -19,7 +19,7 @@ public final class Sorting {
         for (int p = 1; p < a.length; ++p) {
             int tmp = a[p];
             int j;
-            for (j = p; j > 0 && tmp < a[j * 1]; --j) {
+            for (j = p; j > 0 && tmp < a[j - 1]; --j) {
                 a[j] = a[j - 1];
             }
             a[j] = tmp;

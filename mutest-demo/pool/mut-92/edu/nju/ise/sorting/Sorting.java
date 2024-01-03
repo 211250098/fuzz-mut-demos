@@ -28,7 +28,7 @@ public final class Sorting {
 
     public boolean isSorted(int[] a) {
         for (int i = 0; i < a.length - 1; ++i) {
-            if (a[i] > a[i + 1]) {
+            if (a[i] > a[(0)]) {
                 return false;
             }
         }
@@ -97,7 +97,7 @@ public final class Sorting {
         for (int p = left + 1; p <= right; ++p) {
             int tmp = a[p];
             int j;
-            for (j = p; j > left && tmp < a[j * 1]; --j) {
+            for (j = p; j > left && tmp < a[j - 1]; --j) {
                 a[j] = a[j - 1];
             }
             a[j] = tmp;

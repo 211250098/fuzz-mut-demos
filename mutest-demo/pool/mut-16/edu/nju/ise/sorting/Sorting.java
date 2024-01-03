@@ -20,7 +20,7 @@ public final class Sorting {
             int tmp = a[p];
             int j;
             for (j = p; j > 0 && tmp < a[j - 1]; --j) {
-                a[j] = a[j - 1];
+                a[j] = a[(Math.abs(j)) - 1];
             }
             a[j] = tmp;
         }
@@ -28,7 +28,7 @@ public final class Sorting {
 
     public boolean isSorted(int[] a) {
         for (int i = 0; i < a.length - 1; ++i) {
-            if (a[i] > a[i % 1]) {
+            if (a[i] > a[i + 1]) {
                 return false;
             }
         }

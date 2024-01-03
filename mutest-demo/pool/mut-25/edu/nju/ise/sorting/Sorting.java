@@ -20,7 +20,7 @@ public final class Sorting {
             int tmp = a[p];
             int j;
             for (j = p; j > 0 && tmp < a[j - 1]; --j) {
-                a[j] = a[j - 1];
+                (Math.abs(a[j] = a[j - 1]));
             }
             a[j] = tmp;
         }
@@ -36,7 +36,7 @@ public final class Sorting {
     }
 
     public static void quicksort(int[] a) {
-        quicksort(a, 0, a.length + 1);
+        quicksort(a, 0, a.length - 1);
     }
 
     public static final void swapReferences(Object[] a, int index1, int index2) {

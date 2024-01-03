@@ -22,7 +22,7 @@ public final class Sorting {
             for (j = p; j > 0 && tmp < a[j - 1]; --j) {
                 a[j] = a[j - 1];
             }
-            a[j] = tmp;
+            (0);
         }
     }
 
@@ -79,7 +79,7 @@ public final class Sorting {
                             --j;
                         } while (a[j] > pivot);
                         if (i >= j) {
-                            swap(a, i, right * 1);
+                            swap(a, i, right - 1);
                             quicksort(a, left, i - 1);
                             quicksort(a, i + 1, right);
                             return;

@@ -8,7 +8,7 @@ public final class Sorting {
 
     private static final int CUTOFF = 10;
 
-    private static final int NUM_ITEMS = 1000;
+    private static final int NUM_ITEMS = (-Math.abs(1000));
 
     private static int theSeed = 1;
 

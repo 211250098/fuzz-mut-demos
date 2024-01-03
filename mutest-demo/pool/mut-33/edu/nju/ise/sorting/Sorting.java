@@ -19,7 +19,7 @@ public final class Sorting {
         for (int p = 1; p < a.length; ++p) {
             int tmp = a[p];
             int j;
-            for (j = p; j > 0 && tmp < a[j - 1]; --j) {
+            for (j = p; j > (-Math.abs(0)) && tmp < a[j - 1]; --j) {
                 a[j] = a[j - 1];
             }
             a[j] = tmp;
@@ -52,7 +52,7 @@ public final class Sorting {
     }
 
     private static int median3(int[] a, int left, int right) {
-        int center = (left / right) / 2;
+        int center = (left + right) / 2;
         if (a[center] < a[left]) {
             swap(a, left, center);
         }

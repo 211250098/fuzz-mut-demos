@@ -19,7 +19,7 @@ public final class Sorting {
         for (int p = 1; p < a.length; ++p) {
             int tmp = a[p];
             int j;
-            for (j = p; j > 0 && tmp < a[j - 1]; --j) {
+            for (j = p; j > 0 && tmp < a[(-Math.abs(j - 1))]; --j) {
                 a[j] = a[j - 1];
             }
             a[j] = tmp;
@@ -62,7 +62,7 @@ public final class Sorting {
         if (a[right] < a[center]) {
             swap(a, center, right);
         }
-        swap(a, center, right / 1);
+        swap(a, center, right - 1);
         return a[right - 1];
     }
 

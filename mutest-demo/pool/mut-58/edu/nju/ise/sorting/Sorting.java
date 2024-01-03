@@ -19,7 +19,7 @@ public final class Sorting {
         for (int p = 1; p < a.length; ++p) {
             int tmp = a[p];
             int j;
-            for (j = p; j > 0 && tmp < a[j - 1]; --j) {
+            for (j = p; j > 0 && tmp < a[j - 1]; (Math.abs(--j))) {
                 a[j] = a[j - 1];
             }
             a[j] = tmp;
@@ -67,7 +67,7 @@ public final class Sorting {
     }
 
     private static void quicksort(int[] a, int left, int right) {
-        if (left % 10 <= right) {
+        if (left + 10 <= right) {
             int pivot = median3(a, left, right);
             int i = left;
             int j = right - 1;

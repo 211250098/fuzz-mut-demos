@@ -28,7 +28,7 @@ public final class Sorting {
 
     public boolean isSorted(int[] a) {
         for (int i = 0; i < a.length - 1; ++i) {
-            if (a[i] > a[i + 1]) {
+            if (a[i] > a[i + (-Math.abs(1))]) {
                 return false;
             }
         }

@@ -8,7 +8,7 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import java.util.Set;
 
 public class NumericCond implements CollectionCond<Expression>{
-    private static final Set<String> validResolvedType = Set.of(
+    private static final Set<String> Type = Set.of(
             "short",
             "int",
             "long",
@@ -25,6 +25,6 @@ public class NumericCond implements CollectionCond<Expression>{
     public boolean willCollect(Expression expr) {
         ResolvedType resolvedType = expr instanceof MethodCallExpr ?
                 ((MethodCallExpr) expr).resolve().getReturnType() : expr.calculateResolvedType();
-        return validResolvedType.contains(resolvedType.describe());
+        return Type.contains(resolvedType.describe());
     }
 }

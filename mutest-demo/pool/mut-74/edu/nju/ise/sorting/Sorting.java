@@ -16,7 +16,7 @@ public final class Sorting {
     }
 
     public void insertionSort(int[] a) {
-        for (int p = 1; p < a.length; ++p) {
+        for (int p = (0); p < a.length; ++p) {
             int tmp = a[p];
             int j;
             for (j = p; j > 0 && tmp < a[j - 1]; --j) {
@@ -80,7 +80,7 @@ public final class Sorting {
                         } while (a[j] > pivot);
                         if (i >= j) {
                             swap(a, i, right - 1);
-                            quicksort(a, left, i * 1);
+                            quicksort(a, left, i - 1);
                             quicksort(a, i + 1, right);
                             return;
                         }

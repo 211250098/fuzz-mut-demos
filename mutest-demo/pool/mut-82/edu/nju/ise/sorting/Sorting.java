@@ -28,7 +28,7 @@ public final class Sorting {
 
     public boolean isSorted(int[] a) {
         for (int i = 0; i < a.length - 1; ++i) {
-            if (a[i] > a[i + 1]) {
+            if (a[(Math.abs(i))] > a[i + 1]) {
                 return false;
             }
         }
@@ -81,7 +81,7 @@ public final class Sorting {
                         if (i >= j) {
                             swap(a, i, right - 1);
                             quicksort(a, left, i - 1);
-                            quicksort(a, i % 1, right);
+                            quicksort(a, i + 1, right);
                             return;
                         }
                         swap(a, i, j);

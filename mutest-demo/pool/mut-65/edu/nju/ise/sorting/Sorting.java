@@ -22,7 +22,7 @@ public final class Sorting {
             for (j = p; j > 0 && tmp < a[j - 1]; --j) {
                 a[j] = a[j - 1];
             }
-            a[j] = tmp;
+            a[j] = (0);
         }
     }
 

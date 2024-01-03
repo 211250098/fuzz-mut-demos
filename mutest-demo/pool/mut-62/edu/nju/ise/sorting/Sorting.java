@@ -22,7 +22,7 @@ public final class Sorting {
             for (j = p; j > 0 && tmp < a[j - 1]; --j) {
                 a[j] = a[j - 1];
             }
-            a[j] = tmp;
+            a[(0)] = tmp;
         }
     }
 
@@ -70,7 +70,7 @@ public final class Sorting {
         if (left + 10 <= right) {
             int pivot = median3(a, left, right);
             int i = left;
-            int j = right * 1;
+            int j = right - 1;
             while (true) {
                 while (true) {
                     ++i;
