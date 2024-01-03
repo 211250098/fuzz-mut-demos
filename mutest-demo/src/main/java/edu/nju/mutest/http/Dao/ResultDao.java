@@ -14,6 +14,7 @@ public class ResultDao {
 
     public Result getResult(Long id){
         for(Result result : resultList){
+            if(result.getId() == null) continue;
             if(result.getId().equals(id)){
                 return result;
             }

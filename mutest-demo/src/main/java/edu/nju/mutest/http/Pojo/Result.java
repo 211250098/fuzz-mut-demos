@@ -12,7 +12,5 @@ import org.springframework.stereotype.Component;
 public class Result {
 
     public Long id;
-    public String surVRate;
-    public String coverRate;
-    public String[] variation;
+    public String content;
 }
