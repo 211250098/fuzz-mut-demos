@@ -13,7 +13,7 @@ import java.util.UUID;
 public class CaseDao{
 
     @Autowired
-    private List<Case> caseList;
+    private static List<Case> caseList;
 
     public List<Case> getCaseList(){
         caseList.removeIf(c -> c.getId() == null);

@@ -1,6 +1,8 @@
 package edu.nju.mutest.http.Controller;
 
 import edu.nju.mutest.DemoMutantExecution;
+import edu.nju.mutest.DemoSrcMutationEngine;
+import edu.nju.mutest.http.Dao.DataDao;
 import edu.nju.mutest.http.MyFile;
 import edu.nju.mutest.http.Pojo.*;
 import edu.nju.mutest.http.Service.*;
@@ -27,12 +29,12 @@ public class CaseController {
     private ResultService resultService;
     @Autowired
     private OperatorAndParamService operatorAndParamService;
-    @Autowired
-    private VariationService variationService;
+
+    DataDao dataDao = new DataDao();
 
     @GetMapping("/result")
     public String[][] result() throws IOException, InterruptedException {
-        return DemoMutantExecution.MutantExecute();
+        return dataDao.getRes();
     }
 
     @GetMapping("/mutants")
@@ -69,10 +71,11 @@ public class CaseController {
     }
 
     @PostMapping("/operatorAndParam")
-    public String operatorAndParam(@RequestBody Map map){
-        System.out.println((String) map.get("operator"));
-        System.out.println((String) map.get("parameters"));
+    public String operatorAndParam(@RequestBody Map map) throws IOException, InterruptedException {
         operatorAndParamService.add((String) map.get("operator"), (String) map.get("parameters"));
+        DemoSrcMutationEngine.MutationEngine();
+        String[][] res = DemoMutantExecution.MutantExecute();
+        dataDao.setRes(res);
         return "ok";
     }
 
@@ -88,8 +91,4 @@ public class CaseController {
 //        return "ok";
 //    }
 
-    @GetMapping("/variation")
-    public List<Variation> getVariation(){
-        return variationService.getVariationList();
-    }
 }

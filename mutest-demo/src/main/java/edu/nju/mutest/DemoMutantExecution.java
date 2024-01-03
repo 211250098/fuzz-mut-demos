@@ -19,8 +19,17 @@ public class DemoMutantExecution {
     // Use fixed test suite in this demo.
     public static String[][] MutantExecute() throws IOException, InterruptedException {
         StringBuffer sb = new StringBuffer();
-        File tsDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/src/main/java/edu/nju/mutest/exampleTest");
-        File mutPoolDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
+
+        // 获取当前工作目录
+        String currentWorkingDirectory = System.getProperty("user.dir");
+
+        // 构建相对路径
+        String relativePath1 = "/mutest-demo/original_test";
+        String relativePath2 = "/mutest-demo/pool";
+
+        File tsDir = new File(currentWorkingDirectory, relativePath1);
+        File mutPoolDir = new File(currentWorkingDirectory, relativePath2);
+
         System.out.println("[LOG] Test suite dir: " + tsDir.getAbsolutePath());
         System.out.println("[LOG] Mutant pool dir: " + mutPoolDir.getAbsolutePath());
 
@@ -92,6 +101,7 @@ public class DemoMutantExecution {
 
             }
         }
+
         // Calculate mutation score
         System.out.println("[LOG] =================================================");
         sb.append("=================================================\n");

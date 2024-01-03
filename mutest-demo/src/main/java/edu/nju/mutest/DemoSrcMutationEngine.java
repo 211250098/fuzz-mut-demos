@@ -2,12 +2,12 @@ package edu.nju.mutest;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import edu.nju.mutest.http.Dao.DataDao;
 import edu.nju.mutest.mutator.*;
 import org.apache.commons.io.FileUtils;
 
@@ -23,23 +23,33 @@ import java.util.Optional;
  * Source-level mutation engine using javaParser.
  */
 public class DemoSrcMutationEngine {
-    public static void main(String[] args) throws IOException {
-        File src_file = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo\\original_file");
-        File outDir = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo/pool");
-        List<File> files = List.of(Objects.requireNonNull(src_file.listFiles()));
+    public static void MutationEngine() throws IOException {
+//        File src = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/original_file");
+        // 获取当前工作目录
+        String currentWorkingDirectory = System.getProperty("user.dir");
+
+        // 构建相对路径
+        String relativePath1 = "/mutest-demo/original_file";
+        String relativePath2 = "/mutest-demo/pool";
+
+        // 创建File对象
+        File src = new File(currentWorkingDirectory, relativePath1);
+        List<File> files = List.of(Objects.requireNonNull(src.listFiles()));
         File srcFile = files.get(0);
+
+        File outDir = new File(currentWorkingDirectory, relativePath2);
+
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
 
-        String MutatorName = "UOI";//改成上传的变异算子的名字
+        DataDao operatorAndParamDao = new DataDao();
+        String MutatorName = operatorAndParamDao.getOperator();//改成上传的变异算子的名字
         Mutator mutator = null;
         // Initialize mutator(s).
 
         //在ABS跟UOI中需要这个配置
         ParserConfiguration parserConfiguration = new ParserConfiguration().setSymbolResolver(new JavaSymbolSolver(new CombinedTypeSolver(new ReflectionTypeSolver())));
         JavaParser javaParser = new JavaParser(parserConfiguration);
-
-
 
         CompilationUnit cu = javaParser.parse(srcFile).getResult().get();
         List<CompilationUnit> mutCUs = new ArrayList<>(List.of(cu));
