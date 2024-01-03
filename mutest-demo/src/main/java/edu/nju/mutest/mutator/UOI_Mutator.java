@@ -2,8 +2,10 @@ package edu.nju.mutest.mutator;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.expr.*;
-import edu.nju.mutest.visitor.collector.ExpressionCollector;
+import com.github.javaparser.ast.expr.EnclosedExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.UnaryExpr;
+import edu.nju.mutest.visitor.collector.UOIExpressionCollector;
 import edu.nju.mutest.visitor.collector.cond.BooleanCond;
 import edu.nju.mutest.visitor.collector.cond.IntegerCond;
 import edu.nju.mutest.visitor.collector.cond.NumericCond;
@@ -28,7 +30,7 @@ public class UOI_Mutator extends AbstractMutator{
     @Override
     public List<CompilationUnit> mutate() {
         if (mutPoints == null) {
-            mutPoints = ExpressionCollector.collect(this.origCU);
+            mutPoints = UOIExpressionCollector.collect(this.origCU);
         }
 
         for (Expression mp : mutPoints) {
@@ -39,12 +41,12 @@ public class UOI_Mutator extends AbstractMutator{
                 replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.LOGICAL_COMPLEMENT));
             }
             if (new VariableCond().willCollect(mp)) {
-                replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_INCREMENT));
-                replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_DECREMENT));
-                replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_INCREMENT));
-                replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_DECREMENT));
-            }
-            if (new NumericCond().willCollect(mp)) {
+                if (new NumericCond().willCollect(mp)) {
+                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_INCREMENT));
+                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_DECREMENT));
+                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_INCREMENT));
+                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_DECREMENT));
+                }
                 replaceNode(mp, new UnaryExpr(new EnclosedExpr(mp.clone()), UnaryExpr.Operator.MINUS));
             }
         }
