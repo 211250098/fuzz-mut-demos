@@ -12,7 +12,7 @@ public class ResultDao {
     @Autowired
     private List<Result> resultList;
 
-    public Result getResult(Long id){
+    public Result getResult(String id){
         for(Result result : resultList){
             if(result.getId() == null) continue;
             if(result.getId().equals(id)){

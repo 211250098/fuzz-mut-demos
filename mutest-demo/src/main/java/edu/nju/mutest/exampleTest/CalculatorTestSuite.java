@@ -1,8 +1,7 @@
-package edu.nju.mutest.example;
+package edu.nju.mutest.exampleTest;
 
-/**
- * Demo test suite for {@link Calculator}
- */
+import edu.nju.mutest.example.Calculator;
+
 public class CalculatorTestSuite {
 
     public static void main(String[] args) {

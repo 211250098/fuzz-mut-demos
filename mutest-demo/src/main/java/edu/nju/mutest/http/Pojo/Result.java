@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class Result {
 
-    public Long id;
+    public String id;
     public String content;
 }
