@@ -24,7 +24,8 @@ import java.util.Optional;
 public class DemoSrcMutationEngine {
     public static void main(String[] args) throws IOException {
         //改成上传的项目
-        File srcFile = new File("D:/NJU/Code/fuzz-mut-demos/mut-cases/Sorting/edu/nju/ise/sorting/Sorting.java");
+        //File srcFile = new File("D:/NJU/Code/fuzz-mut-demos/mut-cases/Sorting/edu/nju/ise/sorting/Sorting.java");
+        File srcFile = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/src/main/java/edu/nju/mutest/example/Calculator.java");
         File outDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
