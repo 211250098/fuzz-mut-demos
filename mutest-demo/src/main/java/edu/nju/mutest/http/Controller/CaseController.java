@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:9526")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class CaseController {
@@ -29,7 +29,7 @@ public class CaseController {
     private ResultService resultService;
 
     @GetMapping("/result/{id}")
-    public Result result(@PathVariable("id") Long id){
+    public Result result(@PathVariable("id") String id){
         return resultService.getResult(id);
     }
 
@@ -39,7 +39,7 @@ public class CaseController {
     }
 
     @GetMapping("/case/{id}")
-    public Case getCaseById(@PathVariable("id") Long id){
+    public Case getCaseById(@PathVariable("id") String id){
         return caseService.getCaseById(id);
     }
 
@@ -50,13 +50,13 @@ public class CaseController {
     }
 
     @PutMapping("/case/{id}")
-    public String updateCase(@PathVariable("id") Long id,@RequestParam("file") MultipartFile file) throws IOException {
+    public String updateCase(@PathVariable("id") String id,@RequestParam("file") MultipartFile file) throws IOException {
         caseService.updateCase(id,file.getBytes());
         return "ok";
     }
 
     @DeleteMapping("/case/{id}")
-    public String removeCase(@PathVariable("id") Long id){
+    public String removeCase(@PathVariable("id") String id){
         caseService.removeCase(id);
         return "ok";
     }

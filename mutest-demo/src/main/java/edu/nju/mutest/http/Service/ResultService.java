@@ -11,7 +11,7 @@ public class ResultService {
     @Autowired
     private ResultDao resultDao;
 
-    public Result getResult(Long id){
+    public Result getResult(String id){
         return resultDao.getResult(id);
     }
 }

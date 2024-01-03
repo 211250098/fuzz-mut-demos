@@ -12,6 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class Case {
 
-    public Long id;
+    public String id;
     public byte[] file;
 }
