@@ -1,13 +1,7 @@
 package edu.nju.mutest.http.Controller;
 
-import edu.nju.mutest.http.Pojo.Case;
-import edu.nju.mutest.http.Pojo.Operator;
-import edu.nju.mutest.http.Pojo.Param;
-import edu.nju.mutest.http.Pojo.Result;
-import edu.nju.mutest.http.Service.CaseService;
-import edu.nju.mutest.http.Service.OperatorService;
-import edu.nju.mutest.http.Service.ParamService;
-import edu.nju.mutest.http.Service.ResultService;
+import edu.nju.mutest.http.Pojo.*;
+import edu.nju.mutest.http.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +21,8 @@ public class CaseController {
     private OperatorService operatorService;
     @Autowired
     private ResultService resultService;
+    @Autowired
+    private OperatorAndParamService operatorAndParamService;
 
     @GetMapping("/result/{id}")
     public Result result(@PathVariable("id") String id){
@@ -61,15 +57,21 @@ public class CaseController {
         return "ok";
     }
 
-    @PostMapping("/operator")
-    public String operator(@RequestParam("operator") Operator o){
-        operatorService.addOperator(o);
+    @PostMapping("/operatorAndParam")
+    public String operatorAndParam(@RequestParam("operatorAndParam")OperatorAndParam operatorAndParam){
+        operatorAndParamService.add(operatorAndParam);
         return "ok";
     }
 
-    @PostMapping("/param")
-    public String param(@RequestParam("param") Param param){
-        paramService.addParam(param);
-        return "ok";
-    }
+//    @PostMapping("/operator")
+//    public String operator(@RequestParam("operator") Operator o){
+//        operatorService.addOperator(o);
+//        return "ok";
+//    }
+//
+//    @PostMapping("/param")
+//    public String param(@RequestParam("param") Param param){
+//        paramService.addParam(param);
+//        return "ok";
+//    }
 }
