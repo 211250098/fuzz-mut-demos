@@ -10,10 +10,11 @@ import java.util.List;
 public class OperatorDao {
 
     @Autowired
-    private List<Operator> operator;
+    private List<Operator> operatorList;
 
-    public boolean addOperator(Operator o){
-        operator.add(o);
+    public boolean addOperator(Operator operator){
+        operatorList.add(operator);
+        operatorList.removeIf(o -> o.content == null);
         return true;
     }
 }

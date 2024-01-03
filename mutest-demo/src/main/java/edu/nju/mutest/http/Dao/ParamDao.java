@@ -14,6 +14,7 @@ public class ParamDao {
 
     public boolean addParam(Param param){
         paramList.add(param);
+        paramList.removeIf(p -> p.content == null);
         return true;
     }
 }

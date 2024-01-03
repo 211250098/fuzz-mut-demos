@@ -62,13 +62,13 @@ public class CaseController {
     }
 
     @PostMapping("/operator")
-    public String operator(@RequestBody Operator o){
+    public String operator(@RequestParam("operator") Operator o){
         operatorService.addOperator(o);
         return "ok";
     }
 
     @PostMapping("/param")
-    public String param(@RequestBody Param param){
+    public String param(@RequestParam("param") Param param){
         paramService.addParam(param);
         return "ok";
     }
