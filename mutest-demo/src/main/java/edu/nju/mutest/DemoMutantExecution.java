@@ -5,6 +5,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import edu.nju.mutest.http.Dao.ResultDao;
 import edu.nju.mutest.http.FileUploadController;
 
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ public class DemoMutantExecution {
     private static String res;
 
     // Use fixed test suite in this demo.
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static String MutantExecute() throws IOException, InterruptedException {
         StringBuffer sb = new StringBuffer();
         File tem = FileUploadController.getFile();
         File tsDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/src/main/java/edu/nju/mutest/exampleTest");
@@ -107,6 +108,7 @@ public class DemoMutantExecution {
                 killedCnt, mutNum, calScore(killedCnt, mutNum));
         sb.append("Stats: ").append(killedCnt).append("/").append(mutNum).append("(#killed/#total), score=").append(calScore(killedCnt, mutNum));
         res = sb.toString();
+        return res;
     }
 
     private static List<File> getAllFiles(File tsDir, String suffix) {
