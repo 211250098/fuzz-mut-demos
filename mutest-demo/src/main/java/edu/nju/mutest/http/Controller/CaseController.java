@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -60,8 +61,10 @@ public class CaseController {
     }
 
     @PostMapping("/operatorAndParam")
-    public String operatorAndParam(@RequestParam("operator") String operator,@RequestParam("param") String param){
-        operatorAndParamService.add(operator,param);
+    public String operatorAndParam(@RequestBody Map map){
+        System.out.println((String) map.get("operator"));
+        System.out.println((String) map.get("parameters"));
+        operatorAndParamService.add((String) map.get("operator"), (String) map.get("parameters"));
         return "ok";
     }
 
