@@ -2,6 +2,7 @@ package edu.nju.mutest;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
@@ -11,7 +12,6 @@ import edu.nju.mutest.mutator.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,14 +29,9 @@ public class DemoSrcMutationEngine {
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
 
-<<<<<<< HEAD
         String MutatorName = "ABS";//改成上传的变异算子的名字
         Mutator mutator = null;
-=======
         // Initialize mutator(s).
-        CompilationUnit cu = StaticJavaParser.parse(srcFile);
-        Mutator mutator = new LCR_Mutator(cu);
->>>>>>> e0d6c133e5981bb24d1a30fc4bac0b632e396549
 
         //在ABS跟UOI中需要这个配置
         ParserConfiguration parserConfiguration = new ParserConfiguration().setSymbolResolver(new JavaSymbolSolver(new CombinedTypeSolver(new ReflectionTypeSolver())));
