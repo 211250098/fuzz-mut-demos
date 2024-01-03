@@ -1,12 +1,14 @@
 package edu.nju.mutest.http.Controller;
 
 import edu.nju.mutest.DemoMutantExecution;
+import edu.nju.mutest.http.MyFile;
 import edu.nju.mutest.http.Pojo.*;
 import edu.nju.mutest.http.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +31,13 @@ public class CaseController {
     private VariationService variationService;
 
     @GetMapping("/result")
-    public String result() throws IOException, InterruptedException {
+    public String[][] result() throws IOException, InterruptedException {
         return DemoMutantExecution.MutantExecute();
+    }
+
+    @GetMapping("/mutants")
+    public MyFile[] mutants() throws IOException {
+        return DemoMutantExecution.getMutFiles();
     }
 
     @GetMapping("/case")

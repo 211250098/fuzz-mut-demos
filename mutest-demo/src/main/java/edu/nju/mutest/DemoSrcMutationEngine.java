@@ -26,7 +26,6 @@ import java.util.Optional;
  */
 public class DemoSrcMutationEngine {
     public static void main(String[] args) throws IOException {
-
         File src_file = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo\\original_file");
         File outDir = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo/pool");
         List<File> files = List.of(Objects.requireNonNull(src_file.listFiles()));
