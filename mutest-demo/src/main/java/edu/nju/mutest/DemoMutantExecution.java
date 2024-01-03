@@ -1,5 +1,12 @@
 package edu.nju.mutest;
 
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import edu.nju.mutest.http.FileUploadController;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,24 +15,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.nju.mutest.http.FileUploadController;
 
 /**
  * A demo for executing test suite against mutants
  */
 public class DemoMutantExecution {
-
+    private static String res;
 
     // Use fixed test suite in this demo.
     public static void main(String[] args) throws IOException, InterruptedException {
-
+        StringBuffer sb = new StringBuffer();
         File tem = FileUploadController.getFile();
         File tsDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/src/main/java/edu/nju/mutest/exampleTest");
         File mutPoolDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
@@ -39,7 +38,7 @@ public class DemoMutantExecution {
             try {
                 CompilationUnit cu = StaticJavaParser.parse(f);
                 Optional<PackageDeclaration> pd;
-                if (IsTestSuite(cu) && (pd = cu.getPackageDeclaration()).isPresent()) {
+                if (isTestSuite(cu) && (pd = cu.getPackageDeclaration()).isPresent()) {
                     String className = f.getName().substring(0, f.getName().lastIndexOf("."));
                     tests.add(pd.get().getName().asString() + '.' + className);
                 }
@@ -47,7 +46,9 @@ public class DemoMutantExecution {
                 e.printStackTrace();
             }
         }
-        System.out.printf("[LOG] Locate %d test files%n", tests.size());
+
+        System.out.printf("[LOG] Locate %d test files\n", tests.size());
+        sb.append("Locate ").append(tests.size()).append(" test files\n");
 
         // Locate all mutants
         File[] fns = mutPoolDir.listFiles();
@@ -56,19 +57,27 @@ public class DemoMutantExecution {
             System.exit(0);
         }
         List<File> mutDirs = Arrays.stream(fns)
-                .filter(f -> !f.getName().startsWith("."))
-                .collect(Collectors.toList());
+                .filter(f -> !f.getName().startsWith(".")).toList();
         int mutNum = mutDirs.size();
-        System.out.printf("[LOG] Locate %d mutants%n", mutNum);
+
+        System.out.printf("[LOG] Locate %d mutants\n", mutNum);
+        sb.append("Locate ").append(mutNum).append(" mutants\n");
 
         // Execute each mutant
         System.out.println("[LOG] Start to execute mutants...");
+        sb.append("Start to execute mutants...\n");
+
         int killedCnt = 0;
         for (File mutDir : mutDirs) {
             String mutName = mutDir.getName();
-            System.out.println("[LOG] -------------------------------------------------");
             compile(mutDir, mutDir, tsDir);
+
+            System.out.println("[LOG] -------------------------------------------------");
+            sb.append("-------------------------------------------------\n");
+
             System.out.println("[LOG] Execute " + mutName);
+            sb.append("Execute ").append(mutName).append("\n");
+
             boolean killed = false;
             // Execute each Main Method in test suites
             for (String ts : tests) {
@@ -79,15 +88,25 @@ public class DemoMutantExecution {
             }
             if (killed) {
                 killedCnt++;
+
                 System.out.println("[LOG] Killed " + mutName);
+                sb.append("Killed ").append(mutName).append("\n");
+
             } else {
+
                 System.out.println("[LOG] Survived " + mutName);
+                sb.append("Survived ").append(mutName).append("\n");
+
             }
         }
         // Calculate mutation score
         System.out.println("[LOG] ======================================================");
+        sb.append("======================================================\n");
+
         System.out.printf("[LOG] Stats: %d/%d(#killed/#total), score=%.2f%n",
                 killedCnt, mutNum, calScore(killedCnt, mutNum));
+        sb.append("Stats: ").append(killedCnt).append("/").append(mutNum).append("(#killed/#total), score=").append(calScore(killedCnt, mutNum));
+        res = sb.toString();
     }
 
     private static List<File> getAllFiles(File tsDir, String suffix) {
@@ -108,14 +127,16 @@ public class DemoMutantExecution {
         return AllFiles;
     }
 
-    private static boolean IsTestSuite(CompilationUnit cu) {
-        return cu.findAll(MethodDeclaration.class)
-                .stream()
-                .anyMatch(md -> md.getNameAsString().equals("main")
-                        && md.getModifiers().stream().anyMatch(m -> m.getKeyword() == Modifier.Keyword.PUBLIC)
-                        && md.getModifiers().stream().anyMatch(m -> m.getKeyword() == Modifier.Keyword.STATIC)
-                        && md.getParameters().size() == 1
-                        && md.getParameters().get(0).getTypeAsString().equals("String[]"));
+    private static boolean isTestSuite(CompilationUnit cu) {
+        return cu.findAll(MethodDeclaration.class).stream().anyMatch(DemoMutantExecution::isMainMethod);
+    }
+
+    private static boolean isMainMethod(MethodDeclaration md) {
+        return md.getNameAsString().equals("main")
+                && md.getModifiers().stream().anyMatch(m -> m.getKeyword() == Modifier.Keyword.PUBLIC)
+                && md.getModifiers().stream().anyMatch(m -> m.getKeyword() == Modifier.Keyword.STATIC)
+                && md.getParameters().size() == 1
+                && md.getParameters().get(0).getTypeAsString().equals("String[]");
     }
 
     /**
@@ -143,7 +164,7 @@ public class DemoMutantExecution {
         return p.exitValue() != 0;
     }
 
-    private static int execute(String...cmd) throws IOException, InterruptedException {
+    private static void execute(String...cmd) throws IOException, InterruptedException {
         // Construct executor
         ProcessBuilder pb = new ProcessBuilder(cmd);
         pb.redirectErrorStream(true);
@@ -162,22 +183,29 @@ public class DemoMutantExecution {
         }
 
         // 0 means survived, not 0 means killed.
-        return p.exitValue();
+        p.exitValue();
     }
 
     private static double calScore(int killedCnt, int totalNum) {
         return ((double) killedCnt / (double) totalNum) * 100;
     }
 
-    public static boolean compile(File dst, File... srcFiles) throws IOException, InterruptedException {
-        List<String> cmdList = new ArrayList<>(List.of("javac", "-d", dst.getAbsolutePath()));
+
+    //echo "javac -d $MUT_DIR $SRC_FILE"
+    //    javac -d "$MUT_DIR" "$SRC_FILE"
+    public static void compile(File mut, File... srcFiles) throws IOException, InterruptedException {
+        if (mut == null || !mut.isDirectory() || srcFiles == null || srcFiles.length == 0) {
+            throw new IllegalArgumentException("Invalid arguments provided");
+        }
+        List<String> cmdList = new ArrayList<>(List.of("javac", "-d", mut.getAbsolutePath()));
         for (File srcFile : srcFiles) {
-            cmdList.addAll(
-                    getAllFiles(srcFile, ".java").stream()
-                            .map(File::getAbsolutePath)
-                            .collect(Collectors.toList())
+            cmdList.addAll(getAllFiles(srcFile, ".java").stream().map(File::getAbsolutePath).toList()
             );
         }
-        return execute(cmdList.toArray(new String[0])) == 0;
+        execute(cmdList.toArray(new String[0]));
+    }
+
+    private String getRes() {
+        return res;
     }
 }
