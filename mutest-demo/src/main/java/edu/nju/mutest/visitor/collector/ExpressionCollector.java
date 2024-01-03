@@ -6,6 +6,7 @@ import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.nju.mutest.visitor.collector.cond.NumericCond;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,8 +79,9 @@ public class ExpressionCollector extends VoidVisitorAdapter<List<Expression>> {
 
     public static List<Expression> collect(CompilationUnit cu) {
         ExpressionCollector collector = new ExpressionCollector();
-        List<Expression> ExprList = new NodeList<>();
+        List<Expression> ExprList = new ArrayList<>();
         collector.visit(cu, ExprList);
-        return ExprList.stream().filter(new NumericCond()::willCollect).collect(Collectors.toList());
+        NumericCond cond = new NumericCond();
+        return ExprList.stream().filter(cond::willCollect).collect(Collectors.toList());
     }
 }

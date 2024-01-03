@@ -25,7 +25,7 @@ public class BinaryMutator extends AbstractMutator {
 
     @Override
     public void locateMutationPoints() {
-        mutPoints = BinaryExprCollector.collect(this.origCU);
+        mutPoints = null;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class BinaryMutator extends AbstractMutator {
 
         // Sanity check.
         if (this.mutPoints == null)
-            throw new RuntimeException("You must locate mutation points first!");
+            mutPoints = BinaryExprCollector.collect(this.origCU);
 
         // Modify each mutation points.
         for (BinaryExpr mp : mutPoints) {

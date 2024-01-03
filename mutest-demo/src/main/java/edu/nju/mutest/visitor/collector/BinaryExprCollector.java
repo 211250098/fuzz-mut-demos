@@ -6,7 +6,9 @@ import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Collect binary expressions
@@ -22,9 +24,9 @@ public class BinaryExprCollector extends VoidVisitorAdapter<List<BinaryExpr>> {
 
     public static List<BinaryExpr> collect(CompilationUnit cu) {
         BinaryExprCollector collector = new BinaryExprCollector();
-        List<BinaryExpr> binaryExprList = new NodeList<>();
+        List<BinaryExpr> binaryExprList = new ArrayList<>();
         collector.visit(cu, binaryExprList);
-        return binaryExprList;
+        return new ArrayList<>(binaryExprList);
     }
 
 }

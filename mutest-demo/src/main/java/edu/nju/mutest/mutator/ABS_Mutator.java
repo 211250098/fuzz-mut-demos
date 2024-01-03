@@ -4,7 +4,6 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.*;
 import edu.nju.mutest.visitor.collector.ExpressionCollector;
-import edu.nju.mutest.visitor.collector.cond.NumericCond;
 
 import java.util.List;
 
@@ -17,13 +16,13 @@ public class ABS_Mutator extends AbstractMutator{
 
     @Override
     public void locateMutationPoints() {
-        mutPoints = ExpressionCollector.collect(this.origCU);
+        mutPoints = null;
     }
 
     @Override
     public List<CompilationUnit> mutate() {
         if (this.mutPoints == null)
-            throw new RuntimeException("You must locate mutation points first!");
+            mutPoints = ExpressionCollector.collect(this.origCU);
 
         for (Expression mp : mutPoints) {
             replaceNode(mp, new MethodCallExpr("Math.abs", mp.clone()));

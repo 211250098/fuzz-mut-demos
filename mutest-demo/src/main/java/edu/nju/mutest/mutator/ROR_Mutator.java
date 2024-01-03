@@ -27,12 +27,12 @@ public class ROR_Mutator extends AbstractMutator{
 
     @Override
     public void locateMutationPoints() {
-        mutPoints = BinaryExprCollector.collect(this.origCU);
+        mutPoints = null;
     }
     @Override
     public List<CompilationUnit> mutate() {
         if (this.mutPoints == null)
-            throw new RuntimeException("You must locate mutation points first!");
+            mutPoints = BinaryExprCollector.collect(this.origCU);
 
         for (BinaryExpr mp : mutPoints) {
             if (targetOps.contains(mp.getOperator())) {

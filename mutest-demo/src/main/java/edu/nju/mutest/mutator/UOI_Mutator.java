@@ -22,13 +22,14 @@ public class UOI_Mutator extends AbstractMutator{
 
     @Override
     public void locateMutationPoints() {
-        mutPoints = ExpressionCollector.collect(this.origCU);
+        mutPoints = null;
     }
 
     @Override
     public List<CompilationUnit> mutate() {
-        if (this.mutPoints == null)
-            throw new RuntimeException("You must locate mutation points first!");
+        if (mutPoints == null) {
+            mutPoints = ExpressionCollector.collect(this.origCU);
+        }
 
         for (Expression mp : mutPoints) {
             if (new IntegerCond().willCollect(mp)) {

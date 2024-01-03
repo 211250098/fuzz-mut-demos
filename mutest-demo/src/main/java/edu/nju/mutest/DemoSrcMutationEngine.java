@@ -1,59 +1,73 @@
 package edu.nju.mutest;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
-import edu.nju.mutest.http.FileUploadController;
+import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import edu.nju.mutest.mutator.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
- * Demo source-level mutation engine using javaparser.
+ * Source-level mutation engine using javaParser.
  */
 public class DemoSrcMutationEngine {
-
-    private static final Map<String, Class> mutatorName2Class = Map.of(
-            "abs", ABS_Mutator.class,
-            "aor", AOR_Mutator.class,
-            "lcr", LCR_Mutator.class,
-            "ror", ROR_Mutator.class,
-            "uoi", UOI_Mutator.class
-    );
-
     public static void main(String[] args) throws IOException {
-
-
-        // Read in original program(s).
-
-//        File srcFile = FileUploadController.getFile();
-        File srcFile = new File("C:/Users/admin/Desktop/fuzz-mut-demos/mut-cases/Sorting/edu/nju/ise/sorting/Sorting.java");
-        File outDir = new File("C:/Users/admin/Desktop/fuzz-mut-demos/mutest-demo/pool");
+        //改成上传的项目
+        File srcFile = new File("D:/NJU/Code/fuzz-mut-demos/mut-cases/Sorting/edu/nju/ise/sorting/Sorting.java");
+        File outDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
 
+        String MutatorName = "ABS";//改成上传的变异算子的名字
+        Mutator mutator = null;
         // Initialize mutator(s).
-        CompilationUnit cu = StaticJavaParser.parse(srcFile);
-        Mutator mutator = new LCR_Mutator(cu);
 
-        // Locate mutation points.
-        mutator.locateMutationPoints();
+        //在ABS跟UOI中需要这个配置
+        ParserConfiguration parserConfiguration = new ParserConfiguration().setSymbolResolver(new JavaSymbolSolver(new CombinedTypeSolver(new ReflectionTypeSolver())));
+        JavaParser javaParser = new JavaParser(parserConfiguration);
 
-        // Fire off mutation! Mutants can be wrapped.
-        List<CompilationUnit> mutCUs = mutator.mutate();
+        CompilationUnit cu = javaParser.parse(srcFile).getResult().get();
+        List<CompilationUnit> mutCUs = new ArrayList<>(List.of(cu));
+
+        switch (MutatorName) {
+            case "ABS" -> {
+                mutator = new ABS_Mutator(cu);
+            }
+            case "AOR" -> {
+                mutator = new AOR_Mutator(cu);
+            }
+            case "LCR" -> {
+                mutator = new LCR_Mutator(cu);
+            }
+            case "ROR" -> {
+                mutator = new ROR_Mutator(cu);
+            }
+            case "UOI" -> {
+                mutator = new UOI_Mutator(cu);
+            }
+        }
+
+        System.out.println("[LOG] use mutator: " + MutatorName);
+
+        mutCUs.addAll(mutator.mutate());
+
+        mutCUs.remove(cu);
         System.out.printf("[LOG] Generate %d mutants.\n", mutCUs.size());
 
         // Preserve to local.
         preserveToLocal(outDir, srcFile, cu, mutCUs);
-
     }
-
 
     /**
      * Write mutants to disk.
@@ -67,12 +81,12 @@ public class DemoSrcMutationEngine {
         // Recreate outDir if it is existed.
         if (outDir.exists()) {
             FileUtils.forceDelete(outDir);
-            System.out.println("[LOG] Delete existing outDir." );
+            System.out.println("[LOG] Delete existing outDir.");
         }
         boolean mkdirs = outDir.mkdirs();
-        if (mkdirs)
+        if (mkdirs) {
             System.out.println("[LOG] Create outDir: " + outDir.getAbsolutePath());
-
+        }
 
         // Path relevant to package info
         String packPath = "";
@@ -88,22 +102,20 @@ public class DemoSrcMutationEngine {
             packPath = packInfo.replace('.', '/');
         }
 
-        // Write mutant to local.
         String pattern = "mut-%d/%s";
-        for (int i = 0 ; i < mutants.size(); i++) {
+        for (int i = 0; i < mutants.size(); i++) {
             // Create directory to preserve the mutant
             File srcFileDir = new File(outDir, String.format(pattern, i + 1, packPath));
             mkdirs = srcFileDir.mkdirs();
-            if (mkdirs)
+            if (mkdirs) {
                 System.out.println("[LOG] Create src file dir: " + srcFileDir.getAbsolutePath());
+            }
             // Write mutant to local.
             File mutSrcFile = new File(srcFileDir, srcFileName);
             FileWriter fw = new FileWriter(mutSrcFile);
             fw.write(mutants.get(i).toString());
             fw.close();
         }
-
     }
-
 
 }

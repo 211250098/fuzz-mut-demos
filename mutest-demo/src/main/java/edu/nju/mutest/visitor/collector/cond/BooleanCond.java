@@ -7,7 +7,7 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import java.util.Set;
 
 public class BooleanCond implements CollectionCond<Expression>{
-    private static final Set<String> validResolvedType = Set.of(
+    private static final Set<String> Type = Set.of(
             "boolean",
             "java.lang.Boolean"
     );
@@ -17,6 +17,6 @@ public class BooleanCond implements CollectionCond<Expression>{
     public boolean willCollect(Expression expr) {
         ResolvedType resolvedType = expr instanceof MethodCallExpr ?
                 ((MethodCallExpr) expr).resolve().getReturnType() : expr.calculateResolvedType();
-        return validResolvedType.contains(resolvedType.describe());
+        return Type.contains(resolvedType.describe());
     }
 }
