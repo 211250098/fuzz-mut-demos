@@ -12,9 +12,10 @@ public class OperatorAndParamDao {
     @Autowired
     private List<OperatorAndParam> operatorAndParamList;
 
-    public boolean add(OperatorAndParam operatorAndParam){
-        operatorAndParamList.add(operatorAndParam);
+    public boolean add(String operator,String param){
+        operatorAndParamList.add(new OperatorAndParam(operator,param));
         operatorAndParamList.removeIf(o -> o.param == null);
+        System.out.println(operatorAndParamList);
         return true;
     }
 }

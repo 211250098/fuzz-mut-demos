@@ -60,8 +60,8 @@ public class CaseController {
     }
 
     @PostMapping("/operatorAndParam")
-    public String operatorAndParam(@RequestParam("operatorAndParam")OperatorAndParam operatorAndParam){
-        operatorAndParamService.add(operatorAndParam);
+    public String operatorAndParam(@RequestParam("operator") String operator,@RequestParam("param") String param){
+        operatorAndParamService.add(operator,param);
         return "ok";
     }
 
