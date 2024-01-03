@@ -16,6 +16,7 @@ public class CaseDao{
     private List<Case> caseList;
 
     public List<Case> getCaseList(){
+        caseList.removeIf(c -> c.getId() == null);
         return caseList;
     }
 
@@ -48,9 +49,7 @@ public class CaseDao{
     public boolean updateCase(Long id,byte[] file){
         for(Case aCase : caseList){
             if(aCase.getId().equals(id)){
-                Random random = new Random();
-                caseList.remove(aCase);
-                caseList.add(new Case(random.nextLong(),file));
+                aCase.setFile(file);
                 return true;
             }
         }
