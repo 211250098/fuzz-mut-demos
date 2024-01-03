@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -23,9 +24,11 @@ import java.util.Optional;
  */
 public class DemoSrcMutationEngine {
     public static void main(String[] args) throws IOException {
-        //改成上传的项目
-        File srcFile = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mut-cases\\Sorting\\edu\\nju\\ise\\sorting\\Sorting.java");
+
+        File src_file = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo\\original_test");
         File outDir = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo/pool");
+        List<File> files = List.of(Objects.requireNonNull(src_file.listFiles()));
+        File srcFile = files.get(0);
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
 
@@ -36,6 +39,8 @@ public class DemoSrcMutationEngine {
         //在ABS跟UOI中需要这个配置
         ParserConfiguration parserConfiguration = new ParserConfiguration().setSymbolResolver(new JavaSymbolSolver(new CombinedTypeSolver(new ReflectionTypeSolver())));
         JavaParser javaParser = new JavaParser(parserConfiguration);
+
+
 
         CompilationUnit cu = javaParser.parse(srcFile).getResult().get();
         List<CompilationUnit> mutCUs = new ArrayList<>(List.of(cu));

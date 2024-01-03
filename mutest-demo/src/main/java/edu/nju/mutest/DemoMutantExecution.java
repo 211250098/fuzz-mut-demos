@@ -25,7 +25,7 @@ public class DemoMutantExecution {
     // Use fixed test suite in this demo.
     public static void main(String[] args) throws IOException, InterruptedException {
         StringBuffer sb = new StringBuffer();
-        File tem = FileUploadController.getFile();
+
         File tsDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/src/main/java/edu/nju/mutest/exampleTest");
         File mutPoolDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
         System.out.println("[LOG] Test suite dir: " + tsDir.getAbsolutePath());
