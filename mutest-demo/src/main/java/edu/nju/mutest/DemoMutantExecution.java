@@ -5,17 +5,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.nju.mutest.http.Dao.ResultDao;
-import edu.nju.mutest.http.FileUploadController;
+import edu.nju.mutest.http.MyFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.util.*;
 
 /**
  * A demo for executing test suite against mutants
@@ -24,9 +17,8 @@ public class DemoMutantExecution {
     private static String res;
 
     // Use fixed test suite in this demo.
-    public static String MutantExecute() throws IOException, InterruptedException {
+    public static String[][] MutantExecute() throws IOException, InterruptedException {
         StringBuffer sb = new StringBuffer();
-        File tem = FileUploadController.getFile();
         File tsDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/src/main/java/edu/nju/mutest/exampleTest");
         File mutPoolDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
         System.out.println("[LOG] Test suite dir: " + tsDir.getAbsolutePath());
@@ -101,14 +93,35 @@ public class DemoMutantExecution {
             }
         }
         // Calculate mutation score
-        System.out.println("[LOG] ======================================================");
-        sb.append("======================================================\n");
+        System.out.println("[LOG] =================================================");
+        sb.append("=================================================\n");
 
         System.out.printf("[LOG] Stats: %d/%d(#killed/#total), score=%.2f%n",
                 killedCnt, mutNum, calScore(killedCnt, mutNum));
         sb.append("Stats: ").append(killedCnt).append("/").append(mutNum).append("(#killed/#total), score=").append(calScore(killedCnt, mutNum));
         res = sb.toString();
-        return res;
+        String[][] temp = new String[1][];
+        temp[0] = res.split("\n");
+        return temp;
+    }
+
+    public static MyFile[] getMutFiles() throws IOException {
+        File mutPool = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
+        List<File> files = getAllFiles(mutPool, ".java");
+        MyFile[] mutFiles = new MyFile[files.size()];
+        for (int i = 0; i < files.size(); i++) {
+            File file = files.get(i);
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            br.close();
+            MyFile myFile = new MyFile("mut-" + (i + 1), content.toString().split("\n"));
+            mutFiles[i] = myFile;
+        }
+        return mutFiles;
     }
 
     private static List<File> getAllFiles(File tsDir, String suffix) {
