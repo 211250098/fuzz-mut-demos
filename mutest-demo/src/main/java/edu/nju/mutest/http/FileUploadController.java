@@ -23,7 +23,7 @@ public class FileUploadController {
         }
 
         String originalFilename = multipartFile.getOriginalFilename();//获取前端发过来的文件的原始文件名字
-        File file_dir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/original_test");//建立一个存储在本机的目录的file空对象
+        File file_dir = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo\\original_file");//建立一个存储在本机的目录的file空对象
         if (file_dir.exists()) {
             FileUtils.forceDelete(file_dir);
             System.out.println("[LOG] Delete existing outDir.");
