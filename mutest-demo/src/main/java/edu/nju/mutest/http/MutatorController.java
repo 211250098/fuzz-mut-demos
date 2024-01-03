@@ -21,6 +21,7 @@ public class MutatorController {
         if (mut != null) {
 
             mutator = mut;
+            System.out.println(mutator);
 
             return new ResponseEntity<>("Mutator uploaded successfully", HttpStatus.OK);
 

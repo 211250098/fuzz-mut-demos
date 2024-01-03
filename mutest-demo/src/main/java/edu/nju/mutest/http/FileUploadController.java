@@ -1,5 +1,6 @@
 package edu.nju.mutest.http;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,61 +13,30 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:9526")
 @RequestMapping("/api")
 public class FileUploadController {
-    static File file ;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile multipartFile) {
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty()) {
             return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            String fileName = multipartFile.getOriginalFilename();
-            File file = new File("D:\\NJU\\Code\\fuzz-mut-demos\\mutest-demo\\original_file\\" + fileName);
-            multipartFile.transferTo(file);
-
-            return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            // 处理文件上传异常
-            return new ResponseEntity<>("Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR);
+        String originalFilename = multipartFile.getOriginalFilename();//获取前端发过来的文件的原始文件名字
+        File file_dir = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo\\original_test");//建立一个存储在本机的目录的file空对象
+        if (file_dir.exists()) {
+            FileUtils.forceDelete(file_dir);
+            System.out.println("[LOG] Delete existing outDir.");
         }
-    }
-
-    @PutMapping("/upload/{id}")
-    public  ResponseEntity<String> updateResource(@PathVariable("id") String resourceId, @RequestParam("file") MultipartFile multipartFile) {
-        if (multipartFile.isEmpty()) {
-            return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST);
+        boolean mkdirs = file_dir.mkdirs();
+        if (mkdirs) {
+            System.out.println("[LOG] Get original_test successfully: " + file_dir.getAbsolutePath() + '/' + originalFilename);
         }
 
-        try {
-            // 将 MultipartFile 转换为 File
-            file = convertMultipartFileToFile(multipartFile);
+        File file = new File(file_dir, originalFilename);
+        multipartFile.transferTo(file);
 
-            // 在这里执行对上传的文件进行处理的逻辑
-            // 可以根据 resourceId 和 uploadedFile 进行相应的处理
-
-            return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
     }
 
-
-
-    private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
-        File file = new File(multipartFile.getOriginalFilename());
-        try (OutputStream outputStream = new FileOutputStream(file)) {
-            outputStream.write(multipartFile.getBytes());
-        }
-        return file;
-    }
-
-    public static File getFile(){
-        return file;
-    }
 }
