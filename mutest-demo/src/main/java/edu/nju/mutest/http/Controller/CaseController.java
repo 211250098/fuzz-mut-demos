@@ -45,6 +45,7 @@ public class CaseController {
 
     @PostMapping("/case")
     public String addCase(@RequestParam("file") MultipartFile file) throws IOException {
+
         caseService.addCase(file.getBytes());
         return "ok";
     }
