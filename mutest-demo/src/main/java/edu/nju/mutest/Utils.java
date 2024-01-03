@@ -9,7 +9,12 @@ import java.util.List;
 public class Utils {
 
     public static MyFile[] getMutFiles() throws IOException {
-        File test_files = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo\\testsuite_files");
+        // 获取当前工作目录
+        String currentWorkingDirectory = System.getProperty("user.dir");
+
+        // 构建相对路径
+        String relativePath = "/mutest-demo/testsuite_files";
+        File test_files = new File(currentWorkingDirectory, relativePath);
         List<File> files = getAllFiles(test_files, ".java");
         MyFile[] mutFiles = new MyFile[files.size()];
         for (int i = 0; i < files.size(); i++) {

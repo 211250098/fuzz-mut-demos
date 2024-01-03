@@ -8,17 +8,8 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import java.util.Set;
 
 public class NumericCond implements CollectionCond<Expression>{
-    private static final Set<String> Type = Set.of(
-            "short",
-            "int",
-            "long",
-            "float",
-            "double",
-            "java.lang.Short",
-            "java.lang.Integer",
-            "java.lang.Long",
-            "java.lang.Float",
-            "java.lang.Double"
+    private static final Set<String> Type = Set.of("short", "int", "long", "float", "double",
+            "java.lang.Short", "java.lang.Integer", "java.lang.Long", "java.lang.Float", "java.lang.Double"
     );
 
     @Override

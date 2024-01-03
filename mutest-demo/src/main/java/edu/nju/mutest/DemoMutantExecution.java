@@ -8,6 +8,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import edu.nju.mutest.http.MyFile;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -24,7 +25,7 @@ public class DemoMutantExecution {
         String currentWorkingDirectory = System.getProperty("user.dir");
 
         // 构建相对路径
-        String relativePath1 = "/mutest-demo/original_test";
+        String relativePath1 = "/mutest-demo/testsuite_files";
         String relativePath2 = "/mutest-demo/pool";
 
         File tsDir = new File(currentWorkingDirectory, relativePath1);
@@ -108,7 +109,8 @@ public class DemoMutantExecution {
 
         System.out.printf("[LOG] Stats: %d/%d(#killed/#total), score=%.2f%n",
                 killedCnt, mutNum, calScore(killedCnt, mutNum));
-        sb.append("Stats: ").append(killedCnt).append("/").append(mutNum).append("(#killed/#total), score=").append(calScore(killedCnt, mutNum));
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        sb.append("Stats: ").append(killedCnt).append("/").append(mutNum).append("(#killed/#total), score=").append(decimalFormat.format(calScore(killedCnt, mutNum)));
         res = sb.toString();
         String[][] temp = new String[1][];
         temp[0] = res.split("\n");
@@ -116,7 +118,13 @@ public class DemoMutantExecution {
     }
 
     public static MyFile[] getMutFiles() throws IOException {
-        File mutPool = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
+        // 获取当前工作目录
+        String currentWorkingDirectory = System.getProperty("user.dir");
+
+        // 构建相对路径
+        String relativePath = "/mutest-demo/pool";
+
+        File mutPool = new File(currentWorkingDirectory, relativePath);
         List<File> files = getAllFiles(mutPool, ".java");
         MyFile[] mutFiles = new MyFile[files.size()];
         for (int i = 0; i < files.size(); i++) {

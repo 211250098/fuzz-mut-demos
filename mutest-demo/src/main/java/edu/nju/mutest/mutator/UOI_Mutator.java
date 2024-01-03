@@ -35,22 +35,34 @@ public class UOI_Mutator extends AbstractMutator{
 
         for (Expression mp : mutPoints) {
             if (new IntegerCond().willCollect(mp)) {
-                replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.BITWISE_COMPLEMENT));
+                IntegerMut(mp);
             }
             if (new BooleanCond().willCollect(mp)) {
-                replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.LOGICAL_COMPLEMENT));
+                BooleanMut(mp);
             }
             if (new VariableCond().willCollect(mp)) {
-                if (new NumericCond().willCollect(mp)) {
-                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_INCREMENT));
-                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_DECREMENT));
-                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_INCREMENT));
-                    replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_DECREMENT));
-                }
-                replaceNode(mp, new UnaryExpr(new EnclosedExpr(mp.clone()), UnaryExpr.Operator.MINUS));
+                VariableMut(mp);
             }
         }
         return mutants;
+    }
+
+    private void IntegerMut(Expression mp) {
+        replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.BITWISE_COMPLEMENT));
+    }
+
+    private void BooleanMut(Expression mp) {
+        replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.LOGICAL_COMPLEMENT));
+    }
+
+    private void VariableMut(Expression mp) {
+        if (new NumericCond().willCollect(mp)) {
+            replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_INCREMENT));
+            replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.PREFIX_DECREMENT));
+            replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_INCREMENT));
+            replaceNode(mp, new UnaryExpr(mp.clone(), UnaryExpr.Operator.POSTFIX_DECREMENT));
+        }
+        replaceNode(mp, new UnaryExpr(new EnclosedExpr(mp.clone()), UnaryExpr.Operator.MINUS));
     }
 
     private void replaceNode(Expression oldExpr, Expression newExpr) {

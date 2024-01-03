@@ -24,7 +24,6 @@ import java.util.Optional;
  */
 public class DemoSrcMutationEngine {
     public static void MutationEngine() throws IOException {
-//        File src = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/original_file");
         // 获取当前工作目录
         String currentWorkingDirectory = System.getProperty("user.dir");
 
@@ -56,21 +55,11 @@ public class DemoSrcMutationEngine {
         List<CompilationUnit> mutCUs = new ArrayList<>(List.of(cu));
 
         switch (MutatorName) {
-            case "ABS" -> {
-                mutator = new ABS_Mutator(cu);
-            }
-            case "AOR" -> {
-                mutator = new AOR_Mutator(cu);
-            }
-            case "LCR" -> {
-                mutator = new LCR_Mutator(cu);
-            }
-            case "ROR" -> {
-                mutator = new ROR_Mutator(cu);
-            }
-            case "UOI" -> {
-                mutator = new UOI_Mutator(cu);
-            }
+            case "ABS" -> mutator = new ABS_Mutator(cu);
+            case "AOR" -> mutator = new AOR_Mutator(cu);
+            case "LCR" -> mutator = new LCR_Mutator(cu);
+            case "ROR" -> mutator = new ROR_Mutator(cu);
+            case "UOI" -> mutator = new UOI_Mutator(cu);
         }
 
         System.out.println("[LOG] use mutator: " + MutatorName);

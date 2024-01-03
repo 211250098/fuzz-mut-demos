@@ -4,13 +4,13 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 @Controller
 @RequestMapping("/api")
@@ -23,7 +23,12 @@ public class FileUploadController {
         }
 
         String originalFilename = multipartFile.getOriginalFilename();//获取前端发过来的文件的原始文件名字
-        File file_dir = new File("D:\\NJU\\Code\\fuzz-mut-demos\\mutest-demo\\original_file");//建立一个存储在本机的目录的file空对象
+
+        String currentWorkingDirectory = System.getProperty("user.dir");
+        // 构建相对路径
+        String relativePath = "/mutest-demo/original_file";
+
+        File file_dir = new File(currentWorkingDirectory, relativePath);//建立一个存储在本机的目录的file空对象
         if (file_dir.exists()) {
             FileUtils.forceDelete(file_dir);
             System.out.println("[LOG] Delete existing outDir.");

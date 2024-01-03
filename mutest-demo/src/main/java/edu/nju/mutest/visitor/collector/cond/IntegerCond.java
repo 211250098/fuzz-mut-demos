@@ -7,13 +7,7 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import java.util.Set;
 
 public class IntegerCond implements CollectionCond<Expression> {
-    private static final Set<String> Type = Set.of(
-            "short",
-            "long",
-            "int",
-            "java.lang.Integer",
-            "java.lang.Short",
-            "java.lang.Long"
+    private static final Set<String> Type = Set.of("short", "long", "int", "java.lang.Integer", "java.lang.Short", "java.lang.Long"
     );
 
     @Override

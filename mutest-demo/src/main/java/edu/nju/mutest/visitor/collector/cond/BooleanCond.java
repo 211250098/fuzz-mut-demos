@@ -7,9 +7,7 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import java.util.Set;
 
 public class BooleanCond implements CollectionCond<Expression>{
-    private static final Set<String> Type = Set.of(
-            "boolean",
-            "java.lang.Boolean"
+    private static final Set<String> Type = Set.of("boolean", "java.lang.Boolean"
     );
 
 
