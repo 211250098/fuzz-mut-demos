@@ -24,12 +24,12 @@ import java.util.Optional;
 public class DemoSrcMutationEngine {
     public static void main(String[] args) throws IOException {
         //改成上传的项目
-        File srcFile = new File("D:/NJU/Code/fuzz-mut-demos/mut-cases/Sorting/edu/nju/ise/sorting/Sorting.java");
-        File outDir = new File("D:/NJU/Code/fuzz-mut-demos/mutest-demo/pool");
+        File srcFile = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mut-cases\\Sorting\\edu\\nju\\ise\\sorting\\Sorting.java");
+        File outDir = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo/pool");
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
 
-        String MutatorName = "ABS";//改成上传的变异算子的名字
+        String MutatorName = "UOI";//改成上传的变异算子的名字
         Mutator mutator = null;
         // Initialize mutator(s).
 
