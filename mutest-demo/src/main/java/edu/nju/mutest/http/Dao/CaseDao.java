@@ -20,7 +20,7 @@ public class CaseDao{
         return caseList;
     }
 
-    public Case getCaseById(Long id){
+    public Case getCaseById(String id){
         for(Case c : caseList){
             if(c.getId() == null)continue;
             if(c.getId().equals(id)){
@@ -32,11 +32,11 @@ public class CaseDao{
 
     public boolean addCase(byte[] file){
         Random random = new Random();
-        caseList.add(new Case(Math.abs(random.nextLong()),file));
+        caseList.add(new Case(String.valueOf(Math.abs(random.nextLong())),file));
         return true;
     }
 
-    public boolean removeCase(Long id){
+    public boolean removeCase(String id){
         for(Case aCase : caseList){
             if(aCase.getId().equals(id)){
                 caseList.remove(aCase);
@@ -46,7 +46,7 @@ public class CaseDao{
         return true;
     }
 
-    public boolean updateCase(Long id,byte[] file){
+    public boolean updateCase(String id,byte[] file){
         for(Case aCase : caseList){
             if(aCase.getId().equals(id)){
                 aCase.setFile(file);

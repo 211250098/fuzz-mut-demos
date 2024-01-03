@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Result {
+public class Variation {
 
     public String id;
-    public String content;
+    public byte[] files;
 }

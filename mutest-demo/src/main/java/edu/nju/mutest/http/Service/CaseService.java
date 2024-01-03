@@ -17,7 +17,7 @@ public class CaseService {
         return caseDao.getCaseList();
     }
 
-    public Case getCaseById(Long id){
+    public Case getCaseById(String id){
         return caseDao.getCaseById(id);
     }
 
@@ -26,11 +26,11 @@ public class CaseService {
         return true;
     }
 
-    public boolean updateCase(Long id, byte[] file){
+    public boolean updateCase(String id, byte[] file){
         return caseDao.updateCase(id,file);
     }
 
-    public boolean removeCase(Long id){
+    public boolean removeCase(String id){
         caseDao.removeCase(id);
         return true;
     }
