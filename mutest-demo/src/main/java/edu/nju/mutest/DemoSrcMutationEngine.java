@@ -30,7 +30,7 @@ public class DemoSrcMutationEngine {
         System.out.println("[LOG] Source file: " + srcFile.getAbsolutePath());
         System.out.println("[LOG] Output dir: " + outDir.getAbsolutePath());
 
-        String MutatorName = "ABS";//改成上传的变异算子的名字
+        String MutatorName = "AOR";//改成上传的变异算子的名字
         Mutator mutator = null;
         // Initialize mutator(s).
 

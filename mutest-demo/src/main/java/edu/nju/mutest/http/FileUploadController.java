@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:9526")
 @RequestMapping("/api")
 public class FileUploadController {
     static File file ;
@@ -23,10 +24,9 @@ public class FileUploadController {
         }
 
         try {
-            file = convertMultipartFileToFile(multipartFile);
-            // 在这里可以对文件进行进一步处理，例如保存到磁盘或解析文件内容
-            // ...
-
+            String fileName = multipartFile.getOriginalFilename();
+            File file = new File("D:\\NJU\\Code\\fuzz-mut-demos\\mutest-demo\\original_file\\" + fileName);
+            multipartFile.transferTo(file);
 
             return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
         } catch (IOException e) {
