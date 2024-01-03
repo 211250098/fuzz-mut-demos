@@ -23,6 +23,8 @@ public class CaseController {
     private ResultService resultService;
     @Autowired
     private OperatorAndParamService operatorAndParamService;
+    @Autowired
+    private VariationService variationService;
 
     @GetMapping("/result/{id}")
     public Result result(@PathVariable("id") String id){
@@ -74,4 +76,9 @@ public class CaseController {
 //        paramService.addParam(param);
 //        return "ok";
 //    }
+
+    @GetMapping("/variation")
+    public List<Variation> getVariation(){
+        return variationService.getVariationList();
+    }
 }
