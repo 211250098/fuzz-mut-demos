@@ -1,52 +1,48 @@
 package edu.nju.mutest;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import edu.nju.mutest.http.MyFile;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
-    /**
-     * 文件byte[]类型转File
-     *
-     * @param bytes     bytes
-     * @param outPath   输出目录
-     * @param fileName  文件名
-     * @return
-     */
-    public static File bytesToFile(byte[] bytes, String outPath, String fileName) {
-        BufferedOutputStream bos = null;
-        FileOutputStream fos = null;
-        File file = null;
-        try {
-            File dir = new File(outPath);
-            if (!dir.exists() && dir.isDirectory()) { //判断文件目录是否存在
-                dir.mkdirs();
+    public static MyFile[] getMutFiles() throws IOException {
+        File test_files = new File("C:\\Users\\admin\\Desktop\\fuzz-mut-demos\\mutest-demo\\testsuite_files");
+        List<File> files = getAllFiles(test_files, ".java");
+        MyFile[] mutFiles = new MyFile[files.size()];
+        for (int i = 0; i < files.size(); i++) {
+            File file = files.get(i);
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
             }
-            file = new File(outPath + File.separator + fileName);
-            fos = new FileOutputStream(file);
-            bos = new BufferedOutputStream(fos);
-            bos.write(bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+            br.close();
+            MyFile myFile = new MyFile("test-" + (i + 1), content.toString().split("\n"));
+            mutFiles[i] = myFile;
+        }
+        return mutFiles;
+    }
+
+    public static List<File> getAllFiles(File tsDir, String suffix) {
+        List<File> AllFiles = new ArrayList<>();
+        if (!tsDir.isFile()) {//文件夹
+            File[] files = tsDir.listFiles();
+            if (tsDir.exists() && files != null) {
+                for (File file : files) {
+                    AllFiles.addAll(getAllFiles(file, suffix));
                 }
             }
         }
-        return file;
+        else {//文件
+            if (tsDir.getAbsolutePath().endsWith(suffix)) {
+                AllFiles = List.of(tsDir);
+            }
+        }
+        return AllFiles;
     }
 
 }
