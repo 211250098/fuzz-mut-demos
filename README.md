@@ -1,40 +1,67 @@
-## Demos for fuzzing and mutation testing
+# 项目文档：变异测试框架
 
-一些自实现的模糊测试（Fuzzing，Fuzz Testing）和变异测试（Mutation Testing）的Demo，用作NJU软件学院软件测试课的参考。
+## 总览
 
-项目结构：
-```text
-.
-├── LICENSE       
-├── README.md
-├── docs            
-├── fuzz-targets
-├── fuzzer-demo 
-├── mut-cases 
-└── mutest-demo 
-```
+本项目是一个变异测试框架，用于评估软件测试套件的缺陷检测能力。框架采用了BS架构，包括一个前端和一个后端，用于管理项目、执行变异测试，并查看测试结果。
 
-- docs: 一些资料
-- fuzz-targets: 一些以Java主类为入口的Fuzz Target/Fuzz Driver
-- fuzzer-demo: Fuzzer demo + ASM实战小例子
-- mut-cases: 变异测试Demo的输入
-- mutest-demo: Source-level变异测试Demo
+## 架构
 
-选课的同学们需根据选题自行搭建模糊器（Fuzzer）或变异测试工具。在本仓库中，fuzz-targets和mut-cases为模糊测试或变异测试的输入，供同学们调试代码使用；fuzzer-demo和mutest-demo分别为模糊测试和变异测试的简单实现。
+### 前端
 
-### 拓展阅读
+前端采用基于Web的用户界面，提供了以下功能：
+- 项目上传
+- 测试用例上传
+- 变异体选择和参数配置
+- 变异结果查看
+- 测试用例管理
 
-模糊测试和变异测试通常会涉及一系列程序变换（Program Transformation）和插装（Instrumentation）的分析操作。针对Java程序的分析可以在源代码（.java）层面和字节码层面（.class）进行（即Source-level和Bytecode-level）。这里给出一些Java源代码分析和字节码操作（Bytecode Manipulation）的相关材料。
+### 后端
 
-- Javaparser: Analyse, transform and generate your Java codebase
-  - 官网: https://javaparser.org/
-- Spoon: Source Code Analysis and Transformation for Java
-  - 官网: https://spoon.gforge.inria.fr/
-  - Github Repo: https://github.com/INRIA/spoon
-  - Examples: https://github.com/SpoonLabs/spoon-examples
-- ASM: All-purpose Java bytecode manipulation and analysis framework
-  - 官网: https://asm.ow2.io/
-- Soot: A framework for analyzing and transforming Java and Android applications
-  - 官网: https://soot-oss.github.io/soot/
-  - Github Repo: https://github.com/soot-oss/soot 
-  - [SootUp](https://soot-oss.github.io/SootUp/announce/): Enhanced version of Soot 
+后端是框架的核心，负责变异测试的基础环节，包括：
+- 变异算子选择
+- 变异生成
+- 变异执行
+
+## 流程
+
+1. **项目上传：** 用户通过前端界面上传项目文件，后端验证并存储项目。
+
+2. **变异选择：** 用户配置和选择变异算子，后端根据配置选择适当的变异算子。
+
+3. **变异生成：** 框架实现了五类基础变异算子，可通过源代码变换方式生成变异体。
+
+4. **变异执行：** 后端运行变异体对测试用例进行测试，并记录结果。
+
+5. **结果查看：** 前端提供用户界面，展示变异测试的结果，包括统计信息和详细的成功/失败情况。
+
+6. **测试用例管理：** 用户可以通过前端界面管理和修改测试用例，与变异结果关联进行分析。
+
+## 类层次设计
+
+项目采用了以下类层次设计：
+
+- **Frontend:**
+    - **upload:** 处理项目上传功能。
+    - **edit:** 管理变异执行过程和结果查看。
+
+- **Backend:**
+    - **original_file:** 接受前端的源代码并保存与该目录
+    - **pool:** 保存变异生成的变异体的目录
+    - **DemoSrcMutationEngine:** 负责变异生成，根据变异算子生成变异体。
+    - **DemoMutantExecutor:** 负责变异执行，运行变异体并记录结果。
+    - **testsuite_files:** 接受前端的测试用例并保存与该目录
+    - **mutator:** 五种基本变异算子的算法
+    - **http:** 接口
+
+## 使用方法
+
+1. 分别克隆后端项目仓库和前端项目仓库到本地。
+2. 安装所需的依赖库和工具。
+3. 运行后端和前端。
+4. 通过前端界面上传项目、执行变异测试，查看结果。（具体请查看前端项目文档）
+
+## 注意事项
+
+- 请确保在运行框架之前详细阅读文档。
+- 在使用过程中遇到问题，请查阅开发日志或寻求团队成员的帮助。
+
